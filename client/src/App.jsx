@@ -14,6 +14,12 @@ import AdminDashboard from './pages/admin-view/AdminDashboard'
 import AdminFeatures from './pages/admin-view/AdminFeatures'
 import AdminOrders from './pages/admin-view/AdminOrders'
 import AdminProducts from './pages/admin-view/AdminProducts'
+import ShopLayout from './components/shopping-view/ShopLayout'
+import NotFound from './pages/NotFound'
+import ShopAccount from './pages/shopping-view/ShopAccount'
+import ShopCheckout from './pages/shopping-view/ShopCheckout'
+import ShopHome from './pages/shopping-view/ShopHome'
+import Shoplisting from './pages/shopping-view/Shoplisting'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -36,6 +42,15 @@ function App() {
             <Route path='orders' element={<AdminOrders/>} />
            <Route path="products" element={<AdminProducts/>}/>
       </Route>
+
+      <Route path='/shop' element={<ShopLayout/>} >
+            <Route path='account' element={<ShopAccount/>} />
+            <Route path="checkout" element={<ShopCheckout/>}/>
+            <Route path='home' element={<ShopHome/>} />
+            <Route path="listing" element={<Shoplisting/>}/>
+      </Route>
+
+      <Route path="*" element={<NotFound/>} />
 
 
     </Routes>
