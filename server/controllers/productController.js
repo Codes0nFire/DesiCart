@@ -9,15 +9,43 @@ const HandleError = require("../utils/handleError");
 // Get all products
 exports.getAllProducts =handleAsyncError(async (req, res,next) => {
 
-    // const apiFun=new Apifun(productModel.find(),req.query)
+    const itemPerPage=2
 
-    // console.log(req.query)
+    const api=new Apifun(productModel.find(),req.query).search().filter()
+    // .pagination(itemPerPage)
 
-    const products = await productModel.find()
+    // filter the data before pageination chceckout evn that page is ossible to show or not
+    // based on the data that we have in our database
+
+    let copyProducts=api.query.clone()
+    let documentCount=await copyProducts.countDocuments()
+
+    let canhavePages=Math.ceil(documentCount/itemPerPage)
+
+    const pageno=Number(api.queryStr.pageno ) || 1
+
+    // if user lookouit for the pagno but we dont have enougjh items to render that page 
+
+    if(pageno>canhavePages && documentCount>0){
+        return next(new HandleError("This page is not avilable ",404))
+    }
+
+    // Now apply Paginatiom
+    api.pagination(itemPerPage)
+
+    const products = await api.query
+
+    if(!products || products.length==0){
+        return next(new HandleError("No products found",404))
+    }
 
     res.status(200).json({
         success:true,
-        products
+        products,
+        productCount:documentCount,
+        totalPages:canhavePages,
+        productPerPage:itemPerPage,
+        currentPageNo:pageno
     })
 
 })
