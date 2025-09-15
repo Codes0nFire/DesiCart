@@ -29,43 +29,30 @@ class Apifun {
     return this;
   }
 
+  //   filter api functionality method
 
+  filter() {
+    let updatekeywords = { ...this.queryStr };
+    const filterdata = ["keyword", "limit", "pageno"];
 
+    filterdata.forEach((e) => delete updatekeywords[e]);
 
-//   filter api functionality method
+    this.query = this.query.find(updatekeywords);
 
-filter(){
+    return this;
+  }
 
-    let updatekeywords={...this.queryStr}
-    const filterdata=["keyword","limit","pageno"]
+  // pagination api functionality
 
-    filterdata.forEach(e=> delete updatekeywords[e])
+  pagination(itemperPage) {
+    let pageno = Number(this.queryStr.pageno) || 1;
 
-    this.query=this.query.find(updatekeywords)
+    let skip = itemperPage * (pageno - 1);
 
-    return this
+    this.query = this.query.limit(itemperPage).skip(skip);
 
-}
-
-
-// pagination api functionality 
-
-pagination(itemperPage){
-
-     let pageno=Number(this.queryStr.pageno) || 1
-
-
-     let skip=itemperPage*(pageno-1)
-
-     this.query=this.query.limit(itemperPage).skip(skip)
-
-     
-
-     return this 
-
-
-}
-
+    return this;
+  }
 }
 
 module.exports = Apifun;
