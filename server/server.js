@@ -19,6 +19,7 @@ const cors  = require('cors')
 const cookieparser=require("cookie-parser")
 const morgan = require('morgan')
 const productRoutes=require("./routes/productRoute");
+const userRoutes=require("./routes/userroute")
 const errHandler = require('./middlewares/error');
 
 app.use(express.json())
@@ -29,6 +30,9 @@ app.use(morgan("dev"))
 
 // Mount all product routes under /api/v1
 app.use("/api/v1", productRoutes);
+
+// Mount all user routes 
+app.use("/api/v1", userRoutes);
 
 // Handle the errors
 app.use(errHandler)
@@ -42,7 +46,7 @@ const server = app.listen(PORT,()=>{
 // Handle unhandledRejection
 process.on("unhandledRejection", (err) => {
   console.log(`Error : ${err.message}`);
-  console.log(`shutting down the server`);
+  console.log(`Shutting down the server`);
   server.close(() => {
     process.exit(1);
   });
