@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const validator = require('validator')
 const bcrypt = require('bcrypt')
-
+const JWT=require("jsonwebtoken")
 
 
 
@@ -54,9 +54,28 @@ const userSchema = new mongoose.Schema(
 
 
 // Hashing the password using bcrypt
-userSchema.pre("save", async  function (){
-  this.password= await bcrypt.hash(this.password,10) 
+userSchema.pre("save", async  function (next){
+  //  if password is not modified no need to hash  the password again 
+   if(!this.isModified("password")){
+    return next()
+  }
+  this.password= await bcrypt.hash(this.password,10)
 })
+
+
+
+// Genrate JWT Token
+userSchema.methods.getJWTToken= function (){
+   let token= JWT.sign({id:this._id},process.env.JWT_SECRET,{expiresIn:process.env.JWT_EXPIRE*24*60*60*1000})
+   return token
+}
+
+
+// password verification
+userSchema.methods.verifyPassword= async function (enteredPassword){
+return await bcrypt.compare(enteredPassword+"",this.password)
+
+}
 
 
 const userModel=mongoose.model("user",userSchema)
