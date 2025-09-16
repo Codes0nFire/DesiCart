@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const validator = require('validator')
-
+const bcrypt = require('bcrypt')
 
 
 
@@ -51,6 +51,12 @@ const userSchema = new mongoose.Schema(
   },
   { timestamps: true } 
 );
+
+
+// Hashing the password using bcrypt
+userSchema.pre("save", async  function (){
+  this.password= await bcrypt.hash(this.password,10) 
+})
 
 
 const userModel=mongoose.model("user",userSchema)

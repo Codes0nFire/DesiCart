@@ -13,7 +13,7 @@ const errHandler=(err, req, res, next) => {
   }
   else if (err.code === 11000) {
     const field = Object.keys(err.keyValue);
-    err = new HandleEroor(`Duplicate value for field: ${field}`, 409);
+    err = new HandleError(`Duplicate value for field: ${field}`, 409);
   }
   else if (err.name === 'DocumentNotFoundError') {
     err = new HandleError('Document not found', 404);
