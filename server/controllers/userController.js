@@ -68,3 +68,21 @@ exports.loginUser=async (req,res,next)=>{
     
 
 }
+
+
+
+// Logout
+exports.logoutUser=async (req,res,next)=>{
+    
+    // clear the  token 
+    res.cookie("token",null,{
+        expires: new Date( Date.now()),
+        httpOnly:true
+    })
+    .json({
+        success:true,
+        message:"Logout success"
+
+    })
+
+}
