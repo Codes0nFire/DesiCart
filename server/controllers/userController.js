@@ -6,7 +6,7 @@ const router=express.Router()
 
 
 
-
+// Register user
 exports.registerUser=async (req,res,next)=>{
 
     const {name,email,password}=req.body 
@@ -28,13 +28,7 @@ exports.registerUser=async (req,res,next)=>{
 }
 
 
-
-
-
-
-
-
-
+// Login User
 exports.loginUser=async (req,res,next)=>{
 
     const {email,password}=req.body 
